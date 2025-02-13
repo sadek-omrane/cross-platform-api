@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\EFileController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\SectorController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
@@ -57,5 +60,43 @@ Route::group([
         Route::post('', [ServiceController::class, 'store']);
         Route::get('{service}', [ServiceController::class, 'show']);
         Route::put('{service}', [ServiceController::class, 'update']);
+    });
+});
+
+// efiles
+Route::group([
+    'middleware' => ['api'],
+    'prefix' => 'efiles'
+], function ($router) {
+    Route::group(['middleware' => 'auth:api'], function () {
+
+    });
+    Route::post('/upload', [EFileController::class, 'upload']);
+    Route::get('/{id}', [EFileController::class, 'read']);
+    Route::delete('/{id}', [EFileController::class, 'delete']);
+});
+
+//chats
+Route::group([
+    'middleware' => ['api'],
+    'prefix' => 'chats'
+], function ($router) {
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::get('', [ChatController::class, 'index']);
+        Route::post('', [ChatController::class, 'store']);
+        Route::get('{chat}', [ChatController::class, 'show']);
+        Route::delete('{chat}', [ChatController::class, 'destroy']);
+    });
+});
+
+//messages
+Route::group([
+    'middleware' => ['api'],
+    'prefix' => 'messages'
+], function ($router) {
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::post('', [MessageController::class, 'store']);
+        Route::put('{message}', [MessageController::class, 'update']);
+        Route::delete('{message}', [MessageController::class, 'destroy']);
     });
 });

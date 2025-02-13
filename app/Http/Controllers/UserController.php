@@ -12,9 +12,15 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
+        //get query params
+        $searchKey = $request->query('search');
+        $users = User::where('id', '!=', Auth::id());
+        if($searchKey) {
+            $users->where('name', 'like', '%'.$searchKey.'%');
+        }
+        $users = $users->get();
         return $this->sendResponse($users, 'Users retrieved successfully');
     }
 
@@ -33,6 +39,8 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'profile_image_id' => 'nullable',
+            'cover_image_id' => 'nullable',
             'email' => 'required|email'
         ]);
 
@@ -83,10 +91,7 @@ class UserController extends Controller
 
         $token = Auth::login($user);
 
-        return $this->sendResponse([
-            'user' => $user,
-            'token' => $token,
-        ], 'User registered successfully');
+        return $this->sendResponse($token, 'User registered successfully');
     }
 
     /**
@@ -113,10 +118,7 @@ class UserController extends Controller
             return $this->sendError('Email or password is incorrect', [], 401);
         }
 
-        return $this->sendResponse([
-            'user' => Auth::user(),
-            'token' => $token,
-        ], 'User logged in successfully');
+        return $this->sendResponse($token, 'User logged in successfully');
     }
 
     /**
