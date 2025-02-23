@@ -20,7 +20,7 @@ class Chat extends Model
 
     public function messages()
     {
-        return $this->hasMany(Message::class)->with('fromUser');
+        return $this->hasMany(Message::class)->with('fromUser')->orderBy('updated_at', 'desc');
     }
 
     public function users()

@@ -43,6 +43,8 @@ class MessageController extends Controller
             'content' => $request->content,
         ]);
 
+        $message->fromUser;
+
         return $this->sendResponse($message, 'Message created successfully.');
     }
 

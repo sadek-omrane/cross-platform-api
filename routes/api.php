@@ -60,6 +60,7 @@ Route::group([
         Route::post('', [ServiceController::class, 'store']);
         Route::get('{service}', [ServiceController::class, 'show']);
         Route::put('{service}', [ServiceController::class, 'update']);
+        Route::delete('{service}', [ServiceController::class, 'destroy']);
     });
 });
 

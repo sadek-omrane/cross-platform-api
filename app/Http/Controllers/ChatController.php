@@ -40,11 +40,18 @@ class ChatController extends Controller
             return $this->sendError('Validation Error.', $validator->errors(), 400);
         }
 
-        $chat = Chat::create([
-            'created_by_id' => Auth::id(),
-        ]);
+        // check if chat already exists
+        $chat = Chat::whereHas('users', function ($query) use ($request) {
+            $query->where('user_id', $request->user_id);
+        })->first();
 
-        $chat->users()->attach([$request->user_id, Auth::id()]);
+        if(!$chat){
+            $chat = Chat::create([
+                'created_by_id' => Auth::id(),
+            ]);
+
+            $chat->users()->attach([$request->user_id, Auth::id()]);
+        }
 
         // create message
         $chat->messages()->create([
@@ -60,7 +67,7 @@ class ChatController extends Controller
      */
     public function show(Chat $chat)
     {
-        $chat->load('users', 'messages');
+        $chat->load('users', 'messages', 'createdBy');
 
         return $this->sendResponse($chat, 'Chat retrieved successfully.');
     }

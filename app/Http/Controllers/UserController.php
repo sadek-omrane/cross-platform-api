@@ -126,7 +126,7 @@ class UserController extends Controller
      */
     public function logout(){
         Auth::logout();
-        return $this->sendResponse([], 'User logged out successfully');
+        return $this->sendResponse( null, 'User logged out successfully');
     }
 
     /**
