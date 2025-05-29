@@ -84,6 +84,6 @@ class MessageController extends Controller
     public function destroy(Message $message)
     {
         $message->delete();
-        return $this->sendResponse([], 'Message deleted successfully.');
+        return $this->sendResponse(null, 'Message deleted successfully.');
     }
 }

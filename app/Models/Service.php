@@ -23,6 +23,7 @@ class Service extends Model
         'sector_id',
     ];
 
+
     /**
      * Get the user that created the service.
      */
@@ -35,5 +36,10 @@ class Service extends Model
      */
     public function sector(){
         return $this->belongsTo(Sector::class);
+    }
+
+    //faviorites
+    public function favorites(){
+        return $this->hasMany(Favorite::class);
     }
 }

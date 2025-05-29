@@ -42,8 +42,11 @@ class ChatController extends Controller
 
         // check if chat already exists
         $chat = Chat::whereHas('users', function ($query) use ($request) {
-            $query->where('user_id', $request->user_id);
-        })->first();
+                $query->where('user_id', $request->user_id);
+            })->whereHas('users', function ($query) {
+                $query->where('user_id', Auth::id());
+            })->with('users')
+            ->first();
 
         if(!$chat){
             $chat = Chat::create([

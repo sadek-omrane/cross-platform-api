@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\EFileController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\SectorController;
 use App\Http\Controllers\ServiceController;
@@ -47,6 +48,18 @@ Route::group([
         Route::post('', [SectorController::class, 'store']);
         Route::get('{sector}', [SectorController::class, 'show']);
         Route::put('{sector}', [SectorController::class, 'update']);
+    });
+});
+
+//sectors
+Route::group([
+    'middleware' => ['api'],
+    'prefix' => 'favorites'
+], function ($router) {
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::get('', [FavoriteController::class, 'index']);
+        Route::post('', [FavoriteController::class, 'store']);
+        Route::delete('{service}', [FavoriteController::class, 'destroy']);
     });
 });
 

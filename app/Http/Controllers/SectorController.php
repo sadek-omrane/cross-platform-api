@@ -69,6 +69,6 @@ class SectorController extends Controller
     public function destroy(Sector $sector)
     {
         $sector->delete();
-        return $this->sendResponse([], 'Sector deleted successfully.');
+        return $this->sendResponse(null, 'Sector deleted successfully.');
     }
 }

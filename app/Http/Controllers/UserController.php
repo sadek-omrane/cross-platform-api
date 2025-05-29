@@ -59,7 +59,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return $this->sendResponse([], 'User deleted successfully');
+        return $this->sendResponse(null, 'User deleted successfully');
     }
 
     /**
@@ -126,7 +126,7 @@ class UserController extends Controller
      */
     public function logout(){
         Auth::logout();
-        return $this->sendResponse( null, 'User logged out successfully');
+        return $this->sendResponse(null, 'User logged out successfully');
     }
 
     /**

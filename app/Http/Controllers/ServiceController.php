@@ -30,6 +30,12 @@ class ServiceController extends Controller
 
         $services = $services->get();
 
+        // add is_favorite attribute to each service
+        $services = $services->map(function ($service) {
+            $service['is_favorite'] = $service->favorites()->where('user_id', Auth::id())->exists();
+            return $service;
+        });
+
         return $this->sendResponse($services, 'Service retrieved successfully.');
     }
 
@@ -68,6 +74,7 @@ class ServiceController extends Controller
     public function show(Service $service)
     {
         $service->load('sector', 'createdBy');
+        $service['is_favorite'] = $service->favorites()->where('user_id', Auth::id())->exists();
         return $this->sendResponse($service, 'Success');
     }
 
